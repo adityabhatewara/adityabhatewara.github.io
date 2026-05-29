@@ -129,21 +129,12 @@ nav .links a:hover::after { width: 100%; }
 }
 .hero-photo-frame {
   width: 100%; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden;
-  border: 1px solid var(--border); position: relative;
+  border: 2px solid var(--border-accent); position: relative;
   background: var(--bg-card);
+  box-shadow: 0 0 0 1px var(--border), 0 20px 60px rgba(0,0,0,0.4);
 }
 .hero-photo-frame img, .hero-photo-frame video {
   width: 100%; height: 100%; object-fit: cover;
-}
-/* Placeholder state — remove this class once you add your image */
-.hero-photo-frame.placeholder {
-  display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, var(--bg-card), var(--surface));
-}
-.hero-photo-frame.placeholder::after {
-  content: '📸 Add your photo here → assets/hero.jpg';
-  font-family: var(--mono); font-size: 0.72rem; color: var(--text-muted);
-  text-align: center; padding: 20px;
 }
 .hero-photo-badge {
   position: absolute; bottom: 16px; left: 16px; right: 16px;
@@ -279,6 +270,16 @@ section { padding: 100px 80px; position: relative; }
 }
 .gallery-item.tall { grid-row: span 2; }
 .gallery-item.wide { grid-column: span 2; }
+/* Video play indicator on gallery items */
+.gallery-item .vid-play-hint {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(8,8,10,0.7); border: 1px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px); transition: var(--transition); pointer-events: none;
+}
+.gallery-item:hover .vid-play-hint { background: var(--accent); border-color: var(--accent); }
+.vid-play-hint svg { width: 16px; height: 16px; fill: white; margin-left: 2px; }
 
 /* ===== LIGHTBOX ===== */
 .lightbox {
@@ -291,6 +292,7 @@ section { padding: 100px 80px; position: relative; }
   max-width: 90vw; max-height: 85vh; border-radius: var(--radius);
   object-fit: contain; cursor: default;
 }
+.lightbox video { background: #000; }
 .lightbox-close {
   position: absolute; top: 24px; right: 32px;
   background: none; border: none; color: var(--text-dim); font-size: 2rem;
@@ -394,8 +396,14 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
 
 /* ===== MOBILE ===== */
 @media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 40px; }
-  .hero-media { order: -1; max-width: 320px; }
+  .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 24px; min-height: auto; }
+  .hero-media { order: -1; max-width: 180px; margin: 0 auto; }
+  .hero-photo-frame { aspect-ratio: 1/1; border-radius: 50%; }
+  .hero-photo-badge { display: none; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero-sub { font-size: 0.92rem; }
+  .hero-stat .num { font-size: 1.6rem; }
+  .scroll-hint { display: none; }
 }
 @media (max-width: 768px) {
   nav { padding: 12px 20px; }
@@ -413,6 +421,8 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
   .gallery-item.wide { grid-column: span 1; }
   .hero-stats { flex-wrap: wrap; gap: 20px; }
   footer { padding: 40px 20px; flex-direction: column; text-align: center; }
+  /* Show captions always on mobile since no hover */
+  .gallery-item .g-caption { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -434,10 +444,10 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
   </button>
 </nav>
 
-<!-- HERO — with photo/video slot -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-tag">ME24B096 · IIT Madras</div>
+    <div class="hero-tag">IIT Madras</div>
     <h1>Aditya Bhatewara<br><em>builds things that move,</em><br>think & fly.</h1>
     <p class="hero-sub">Mechanical Engineering undergrad at IIT Madras. I build autonomous rovers, drones, robots, and software — from low-level firmware to full navigation stacks.</p>
     <div class="hero-stats">
@@ -449,13 +459,8 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
     </div>
   </div>
   <div class="hero-media">
-    <img src="./assets/hero.jpeg" alt="Aditya Bhatewara">
-      <!-- ============================================
-           REPLACE: Remove "placeholder" class and add your photo/video:
-           <img src="./assets/hero.jpg" alt="Aditya Bhatewara">
-           OR for video:
-           <video src="./assets/hero-reel.mp4" autoplay muted loop playsinline></video>
-           ============================================ -->
+    <div class="hero-photo-frame">
+      <img src="./assets/hero.jpeg" alt="Aditya Bhatewara">
       <div class="hero-photo-badge">
         <div><div class="hpb-label">Currently</div><div class="hpb-value">Building Autonomous Drones</div></div>
       </div>
@@ -473,70 +478,55 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
     <div class="section-title">Things I've <em>Built</em></div>
   </div>
   <div class="gallery-grid reveal">
-    <!-- GALLERY ITEM 1 — Mars Rover (make this tall) -->
     <div class="gallery-item tall" onclick="openLightbox(this)">
       <img src="./assets/rover-1.jpeg" alt="Mars Rover ISSAC">
-      <!-- REPLACE with: <img src="./assets/rover-1.jpg" alt="Mars Rover ISSAC"> -->
       <div class="g-caption">Rover ISSAC — 1st Autonomous, IRC '26</div>
     </div>
 
-    <!-- GALLERY ITEM 2 — Spider Quadruped -->
     <div class="gallery-item" onclick="openLightbox(this)">
       <img src="./assets/spider_bot.jpeg" alt="Spider Quadruped">
-      <!-- REPLACE with: <img src="./assets/spider-1.jpg" alt="Spider Quadruped"> -->
       <div class="g-caption">12-servo spider quadruped</div>
     </div>
 
-    <!-- GALLERY ITEM 3 — Drone swarm / DiRo Lab -->
     <div class="gallery-item" onclick="openLightbox(this)">
       <div class="g-placeholder">📸 assets/drone-1.jpg<br>Multi-drone swarm setup</div>
-      <!-- REPLACE with: <img src="./assets/drone-1.jpg" alt="Drone Swarm"> -->
       <div class="g-caption">Multi-drone swarm — DiRo Lab</div>
     </div>
 
-    <!-- GALLERY ITEM 4 — Warehouse rover (wide) -->
     <div class="gallery-item wide" onclick="openLightbox(this)">
       <div class="g-placeholder">📸 assets/warehouse-rover.jpg<br>Autonomous warehouse rover — Inter-IIT</div>
-      <!-- REPLACE with: <img src="./assets/warehouse-rover.jpg" alt="Warehouse Rover"> -->
       <div class="g-caption">Warehouse rover — Inter-IIT Tech Meet</div>
     </div>
 
-    <!-- GALLERY ITEM 5 — PCB / Electronics closeup -->
     <div class="gallery-item" onclick="openLightbox(this)">
       <img src="./assets/pcb.jpeg" alt="Custom PCB">
-      <!-- REPLACE with: <img src="./assets/pcb-1.jpg" alt="Custom PCB"> -->
       <div class="g-caption">Custom power distribution board</div>
     </div>
 
-    <!-- GALLERY ITEM 6 — Video demo (tall) -->
+    <!-- Video gallery item — tap/click to play in lightbox -->
     <div class="gallery-item tall" onclick="openLightbox(this)">
-      <video src="./assets/nav_final.mp4" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>
-      <!-- REPLACE with:
-      <video src="./assets/demo-reel.mp4" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>
-      -->
+      <video src="./assets/nav_final.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="vid-play-hint"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
       <div class="g-caption">Autonomous navigation demo</div>
     </div>
 
-    <!-- GALLERY ITEM 7 — Ancient script digitisation -->
     <div class="gallery-item" onclick="openLightbox(this)">
       <img src="./assets/manuscript.jpeg" alt="Manuscript Digitisation">
-      <!-- REPLACE with: <img src="./assets/manuscripts.jpg" alt="Manuscript Digitisation"> -->
       <div class="g-caption">23L manuscripts digitised — Shrut Bhavan</div>
     </div>
 
-    <!-- GALLERY ITEM 8 — Saarang / Rock Night -->
     <div class="gallery-item" onclick="openLightbox(this)">
       <img src="./assets/saarang.jpeg" alt="Saarang Rock Night">
-      <!-- REPLACE with: <img src="./assets/saarang.jpg" alt="Saarang Rock Night"> -->
       <div class="g-caption">Rock Night — 10,000+ crowd</div>
     </div>
   </div>
 </section>
 
-<!-- LIGHTBOX -->
+<!-- LIGHTBOX — supports both images and videos -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
   <button class="lightbox-close" onclick="closeLightbox(event)">×</button>
-  <img id="lightbox-img" src="" alt="">
+  <img id="lightbox-img" src="" alt="" style="display:none;">
+  <video id="lightbox-video" controls autoplay style="display:none;"></video>
   <div class="lightbox-caption" id="lightbox-caption"></div>
 </div>
 
@@ -623,11 +613,9 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
   </div>
   <div class="projects-grid reveal">
 
-    <!-- Project 1: Warehouse Rover -->
     <div class="project-card" onclick="this.classList.toggle('open')">
       <div class="project-media">
         <div class="media-placeholder">📸 Replace → assets/warehouse-rover.jpg</div>
-        <!-- REPLACE with: <img src="./assets/warehouse-rover.jpg" alt="Warehouse Rover"> -->
       </div>
       <div class="project-body">
         <div class="p-tag">Competition · Inter-IIT Tech Meet</div>
@@ -643,11 +631,9 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
       </div>
     </div>
 
-    <!-- Project 2: Palmistry AI -->
     <div class="project-card" onclick="this.classList.toggle('open')">
       <div class="project-media">
         <div class="media-placeholder">📸 Replace → assets/palmistry.jpg</div>
-        <!-- REPLACE with: <img src="./assets/palmistry.jpg" alt="Palmistry AI"> -->
       </div>
       <div class="project-body">
         <div class="p-tag">AI Product</div>
@@ -662,11 +648,9 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
       </div>
     </div>
 
-    <!-- Project 3: Ancient Script -->
     <div class="project-card" onclick="this.classList.toggle('open')">
       <div class="project-media">
         <div class="media-placeholder">📸 Replace → assets/manuscripts.jpg</div>
-        <!-- REPLACE with: <img src="./assets/manuscripts.jpg" alt="Manuscript Digitisation"> -->
       </div>
       <div class="project-body">
         <div class="p-tag">Real-World Deployment</div>
@@ -682,14 +666,9 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
       </div>
     </div>
 
-    <!-- Project 4: Spider Quadruped -->
     <div class="project-card" onclick="this.classList.toggle('open')">
       <div class="project-media">
         <div class="media-placeholder">🎬 Replace → assets/spider-walk.mp4</div>
-        <!-- REPLACE with:
-        <video src="./assets/spider-walk.mp4" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause()"></video>
-        <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
-        -->
       </div>
       <div class="project-body">
         <div class="p-tag">ME2400 · Mechatronics</div>
@@ -796,12 +775,11 @@ footer .f-right { font-size: 0.74rem; color: var(--text-muted); font-family: var
 <footer>
   <div class="f-left">Aditya Bhatewara<span style="color:var(--accent);">.</span></div>
   <div class="f-links">
-    <!-- ADD YOUR LINKS HERE -->
     <a href="https://github.com/adityabhatewara" target="_blank">GitHub</a>
     <a href="https://www.linkedin.com/in/aditya-bhatewara-b9197a320/" target="_blank">LinkedIn</a>
     <a href="mailto:adityabhatewara9@gmail.com">Email</a>
   </div>
-  <div class="f-right">ME24B096 · IIT Madras</div>
+  <div class="f-right">IIT Madras</div>
 </footer>
 
 <script>
@@ -827,22 +805,44 @@ window.addEventListener('scroll', () => {
   if (hint && window.scrollY > 100) hint.style.opacity = '0';
 }, { passive: true });
 
-// Lightbox
+// Lightbox — supports both images and videos
 function openLightbox(el) {
   const img = el.querySelector('img');
   const video = el.querySelector('video');
   const caption = el.querySelector('.g-caption');
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lightbox-img');
+  const lbVid = document.getElementById('lightbox-video');
   const lbCap = document.getElementById('lightbox-caption');
-  if (img) { lbImg.src = img.src; lbImg.style.display = 'block'; lb.classList.add('active'); }
-  else if (video) { /* For video lightbox, you can extend this */ }
+
+  // Reset both
+  lbImg.style.display = 'none';
+  lbImg.src = '';
+  lbVid.style.display = 'none';
+  lbVid.src = '';
+  lbVid.pause();
+
+  if (video) {
+    lbVid.src = video.src;
+    lbVid.style.display = 'block';
+    lbVid.play();
+  } else if (img) {
+    lbImg.src = img.src;
+    lbImg.style.display = 'block';
+  }
+
   if (caption) lbCap.textContent = caption.textContent;
+  lb.classList.add('active');
 }
+
 function closeLightbox(e) {
-  if (e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
-    document.getElementById('lightbox').classList.remove('active');
+  const lb = document.getElementById('lightbox');
+  const lbVid = document.getElementById('lightbox-video');
+  if (e.target === lb || e.target.classList.contains('lightbox-close')) {
+    lb.classList.remove('active');
     document.getElementById('lightbox-img').src = '';
+    lbVid.pause();
+    lbVid.src = '';
   }
 }
 </script>
