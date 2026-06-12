@@ -331,13 +331,13 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
 
   <div class="hero-mid">
     <svg class="fpath" viewBox="0 0 1200 640" preserveAspectRatio="none" aria-hidden="true">
-      <path class="tr" d="M70 560 C 380 620, 480 250, 720 300 S 1010 170, 1130 240"/>
-      <rect class="wp" x="716" y="296" width="7" height="7" transform="rotate(45 719.5 299.5)"/>
-      <rect class="wp" x="1126" y="236" width="7" height="7" transform="rotate(45 1129.5 239.5)"/>
-      <text x="700" y="332">WP-1</text>
-      <text x="1095" y="272">WP-2</text>
+      <path class="tr" d="M70 560 C 340 630, 420 270, 600 310 S 722 250, 758 262"/>
+      <rect class="wp" x="596" y="306" width="7" height="7" transform="rotate(45 599.5 309.5)"/>
+      <rect class="wp" x="754" y="258" width="7" height="7" transform="rotate(45 757.5 261.5)"/>
+      <text x="578" y="344">WP-1</text>
+      <text x="732" y="296">WP-2</text>
       <circle r="3.5" fill="#d98e32">
-        <animateMotion dur="9s" repeatCount="indefinite" path="M70 560 C 380 620, 480 250, 720 300 S 1010 170, 1130 240"/>
+        <animateMotion dur="9s" repeatCount="indefinite" path="M70 560 C 340 630, 420 270, 600 310 S 722 250, 758 262"/>
       </circle>
     </svg>
 
@@ -876,6 +876,40 @@ if (fine){
     w.addEventListener('mouseleave', function(){ v.pause(); });
   });
 }
+
+/* ---- progressive video preload ----
+   Downloads videos one at a time, in page order, starting after the page
+   itself has loaded. When a video gets close to the viewport it jumps the
+   queue. Once buffered, the browser cache makes lightbox playback instant.
+   Skipped entirely for users on Save-Data or 2G connections. ---- */
+(function(){
+  var conn = navigator.connection || {};
+  if (conn.saveData || /\b2g\b/.test(conn.effectiveType||'')) return;
+  var vids=[].slice.call(document.querySelectorAll('.duo video'));
+  if(!vids.length) return;
+  var queue=vids.slice(), busy=false;
+  function bump(v){ var i=queue.indexOf(v); if(i>0){ queue.splice(i,1); queue.unshift(v); } }
+  if('IntersectionObserver' in window){
+    var vio=new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ bump(en.target); vio.unobserve(en.target); } });
+    },{rootMargin:'60% 0px'});
+    vids.forEach(function(v){ vio.observe(v); });
+  }
+  function next(){
+    if(busy) return;
+    var v=queue.shift();
+    if(!v) return;
+    if(!v.isConnected || v.readyState>=4){ next(); return; }
+    busy=true;
+    var t;
+    var done=function(){ busy=false; v.removeEventListener('canplaythrough',done); clearTimeout(t); next(); };
+    t=setTimeout(done,15000);
+    v.addEventListener('canplaythrough',done);
+    v.preload='auto'; v.load();
+  }
+  var kick=function(){ setTimeout(next,800); };
+  if(document.readyState==='complete') kick(); else addEventListener('load',kick);
+})();
 
 /* ---- lightbox (images + video w/ controls) ---- */
 var lb=document.getElementById('lb'), box=lb.querySelector('.box'), cap=lb.querySelector('.cap');
