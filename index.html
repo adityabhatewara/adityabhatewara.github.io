@@ -99,8 +99,14 @@ img,video{display:block;max-width:100%}
 .port{justify-self:end;align-self:center;width:clamp(250px,25vw,390px);aspect-ratio:4/5;transform:rotate(2deg);
   clip-path:polygon(7% 0,100% 3%,95% 100%,0 95%)}
 .port .duo{width:100%;height:100%;box-shadow:14px 18px 0 rgba(0,0,0,.35)}
-.hero-coord{position:absolute;left:7vw;bottom:4vh;z-index:4}
-.scroll-cue{position:absolute;right:7vw;bottom:4vh;z-index:5;font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--paper-dim);writing-mode:vertical-rl;display:flex;gap:12px;align-items:center}
+.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;padding:0 7vw 2.6vh;position:relative;z-index:5}
+.scroll-cue{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--paper-dim);writing-mode:vertical-rl;display:flex;gap:12px;align-items:center}
+.fpath{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.fpath .tr{fill:none;stroke:var(--copper);stroke-width:1.2;stroke-dasharray:1 9;stroke-linecap:round;opacity:.45;animation:dash 26s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-600}}
+.fpath .wp{fill:var(--copper);opacity:.7}
+.fpath text{font-family:var(--mono);font-size:10px;fill:var(--paper-dim);letter-spacing:.18em;opacity:.7}
+.port{position:relative;z-index:2}
 .scroll-cue::after{content:"";width:1px;height:46px;background:var(--paper-dim);animation:drip 1.8s ease-in-out infinite}
 @keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
@@ -113,12 +119,14 @@ img,video{display:block;max-width:100%}
 @keyframes mq{to{transform:translateX(-50%)}}
 
 /* ============ ROVER FEATURE ============ */
-.res{display:flex;gap:1.3rem;flex-wrap:wrap;margin:3rem 0 0}
-.rp{border:1px solid var(--copper);padding:1rem 1.5rem;position:relative;min-width:190px}
-.rp::after{content:"◆";position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--copper);font-size:9px;padding:0 6px}
-.rp .n{font-weight:650;font-size:2rem;line-height:1.05}
-.rp .n i{font-style:italic;font-weight:380;color:var(--copper)}
-.rp .l{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--paper-dim);margin-top:7px;text-transform:uppercase}
+.res{display:grid;grid-template-columns:1.35fr 1fr;gap:2rem;margin-top:4rem}
+.rc{border:1px solid var(--copper);padding:1.8rem 2rem 1.7rem;position:relative}
+.rc::after{content:"◆";position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--copper);font-size:9px;padding:0 6px}
+.rc .cname{font-size:clamp(1.25rem,2.1vw,1.8rem);font-weight:560;line-height:1.12;letter-spacing:-.01em;margin-bottom:.5rem}
+.rc .ranks{display:flex;gap:3rem;margin-top:1.5rem;flex-wrap:wrap}
+.rk .n{font-weight:650;font-size:clamp(2.5rem,4.6vw,3.8rem);line-height:1}
+.rk .n i{font-style:italic;font-weight:380;color:var(--copper);font-size:.45em;vertical-align:.8em}
+.rk .l{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--paper-dim);margin-top:8px;text-transform:uppercase;max-width:20ch}
 .rover-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:5vw;align-items:start;margin-top:7vh}
 .rover-grid p{color:var(--paper-dim);max-width:54ch}
 .rover-grid p b{color:var(--paper);font-weight:500}
@@ -142,21 +150,23 @@ img,video{display:block;max-width:100%}
 /* ============ GALLERY (horizontal) ============ */
 #field{position:relative;height:380vh}
 .pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
-.pin .head{position:absolute;top:8vh;left:7vw;z-index:3}
-.track{display:flex;align-items:center;gap:4.5vw;padding-left:40vw;padding-right:10vw;will-change:transform;width:max-content}
+.pin::before{content:"";position:absolute;left:0;top:0;bottom:0;width:13vw;background:linear-gradient(90deg,var(--ink) 12%,transparent);z-index:2;pointer-events:none}
+.pin::after{content:"";position:absolute;top:0;left:0;right:0;height:30vh;background:linear-gradient(var(--ink) 18%,transparent);z-index:2;pointer-events:none}
+.pin .head{position:absolute;top:7vh;left:7vw;z-index:3}
+.track{display:flex;align-items:center;gap:4.5vw;padding-left:40vw;padding-right:10vw;will-change:transform;width:max-content;position:relative;z-index:1;margin-top:9vh}
 .fr{flex:0 0 auto;position:relative}
 .fr .duo{box-shadow:14px 18px 0 rgba(0,0,0,.35)}
 .fr.r1{transform:rotate(-1.4deg)}.fr.r2{transform:rotate(1.1deg)}.fr.r3{transform:rotate(-.7deg)}
-.fr.w-lg .duo{width:34vw;height:62vh}
-.fr.w-md .duo{width:26vw;height:46vh}
-.fr.w-sm .duo{width:20vw;height:38vh}
-.fr.w-tall .duo{width:21vw;height:66vh}
+.fr.w-lg .duo{width:34vw;height:52vh}
+.fr.w-md .duo{width:26vw;height:44vh}
+.fr.w-sm .duo{width:20vw;height:36vh}
+.fr.w-tall .duo{width:21vw;height:56vh}
 .hint{position:absolute;bottom:6vh;left:7vw;z-index:3}
 
 /* ============ FLIGHT LOG ============ */
 .log{display:flex;flex-direction:column;gap:11vh;counter-reset:log}
 .log-e{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:center}
-.log-e::before{counter-increment:log;content:"0" counter(log);position:absolute;font-weight:700;font-size:clamp(8rem,20vw,19rem);line-height:1;color:transparent;-webkit-text-stroke:1px var(--line);z-index:0;top:50%;transform:translateY(-54%)}
+.log-e::before{counter-increment:log;content:"0" counter(log);position:absolute;font-weight:700;font-size:clamp(8rem,20vw,19rem);line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(217,142,50,.32);z-index:0;top:50%;transform:translateY(-54%)}
 .log-e:nth-child(odd)::before{right:-2vw}
 .log-e:nth-child(even)::before{left:-2vw}
 .log-e:nth-child(even) .log-c{grid-column:2}
@@ -179,7 +189,7 @@ img,video{display:block;max-width:100%}
 .sp-text{position:relative;z-index:3;margin:0 -3.5vw;background:var(--ink);border:1px solid var(--line);padding:2.4rem 2.6rem;box-shadow:0 18px 50px rgba(0,0,0,.45)}
 .sp-text h3{font-size:clamp(1.8rem,3.4vw,2.8rem);font-weight:560;line-height:1.02;letter-spacing:-.015em;margin:.7rem 0 1.1rem}
 .sp-text .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:1.4rem}
-.btn{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--copper);color:var(--copper);padding:.85rem 1.4rem;display:inline-block;margin-top:1.5rem;position:relative;overflow:hidden;z-index:1;transition:color .3s;cursor:none}
+.btn{background:none;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--copper);color:var(--copper);padding:.85rem 1.4rem;display:inline-block;margin-top:1.5rem;position:relative;overflow:hidden;z-index:1;transition:color .3s;cursor:none}
 .btn::before{content:"";position:absolute;inset:0;background:var(--copper);transform:translateY(101%);transition:transform .35s cubic-bezier(.2,.8,.2,1);z-index:-1}
 .btn:hover{color:var(--ink)}
 .btn:hover::before{transform:translateY(0)}
@@ -249,6 +259,7 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
 #lb{position:fixed;inset:0;background:rgba(14,11,6,.95);z-index:95;display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;padding:4vmin;backdrop-filter:blur(6px)}
 #lb.on{display:flex}
 #lb .box img,#lb .box video{max-width:min(1100px,92vw);max-height:80vh;width:auto;height:auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+#lb .box iframe{width:min(1100px,92vw);aspect-ratio:16/9;border:0;box-shadow:0 30px 80px rgba(0,0,0,.6)}
 #lb .cap{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper-dim);text-align:center}
 #lb .x{position:absolute;top:24px;right:30px;background:none;border:1px solid var(--line);color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.2em;padding:10px 16px;cursor:pointer;transition:border-color .3s,color .3s}
 #lb .x:hover{border-color:var(--copper);color:var(--copper)}
@@ -259,7 +270,8 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
   .hero-mid{grid-template-columns:1fr;gap:2rem;padding-top:10vh;align-content:center}
   .port{justify-self:start;width:104px;aspect-ratio:1;clip-path:none;border-radius:50%;overflow:hidden;order:-1}
   .port .duo{border-radius:inherit;box-shadow:none}
-  .scroll-cue,.hero-coord{display:none}
+  .hero-foot,.fpath{display:none}
+  .res{grid-template-columns:1fr}
   .hed{font-size:clamp(2.9rem,14vw,5.2rem)}
   .rover-grid{grid-template-columns:1fr}
   .mos{grid-template-columns:1fr;gap:2.4rem}
@@ -318,6 +330,17 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
   </div>
 
   <div class="hero-mid">
+    <svg class="fpath" viewBox="0 0 1200 640" preserveAspectRatio="none" aria-hidden="true">
+      <path class="tr" d="M70 560 C 380 620, 480 250, 720 300 S 1010 170, 1130 240"/>
+      <rect class="wp" x="716" y="296" width="7" height="7" transform="rotate(45 719.5 299.5)"/>
+      <rect class="wp" x="1126" y="236" width="7" height="7" transform="rotate(45 1129.5 239.5)"/>
+      <text x="700" y="332">WP-1</text>
+      <text x="1095" y="272">WP-2</text>
+      <circle r="3.5" fill="#d98e32">
+        <animateMotion dur="9s" repeatCount="indefinite" path="M70 560 C 380 620, 480 250, 720 300 S 1010 170, 1130 240"/>
+      </circle>
+    </svg>
+
     <div>
       <h1 class="hed" aria-label="Builds things that move, think and fly">
         <span class="ln"><span>Builds</span></span>
@@ -333,8 +356,10 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
     </figure>
   </div>
 
-  <div class="hero-coord mono" aria-hidden="true">12.99° N, 80.23° E · CHENNAI, IN</div>
-  <div class="scroll-cue" aria-hidden="true">SCROLL</div>
+  <div class="hero-foot">
+    <div class="mono" aria-hidden="true">12.99° N, 80.23° E · CHENNAI, IN</div>
+    <div class="scroll-cue" aria-hidden="true">SCROLL</div>
+  </div>
 
   <div class="mq" aria-hidden="true">
     <div class="mq-in">
@@ -350,18 +375,30 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
 
 <!-- ============ THE ROVER (Team Anveshak feature) ============ -->
 <section class="sec" id="rover" aria-label="Team Anveshak mars rover">
-  <div class="kicker"><span class="mono"><b>Flagship</b> · Team Anveshak · CFI, IIT Madras · Apr ’25 to Apr ’26</span></div>
-  <h2 class="h-sec" data-rv>The <em>rover</em> year</h2>
+  <div class="kicker"><span class="mono"><b>Flagship</b> · CFI, IIT Madras · Software &amp; Electrical Engineer · Apr ’25 to Apr ’26</span></div>
+  <h2 class="h-sec" data-rv>Team <em>Anveshak</em></h2>
 
   <div class="res" data-rv>
-    <div class="rp"><div class="n">1st<i>place</i></div><div class="l">Autonomous Mission · IRC ’26</div></div>
-    <div class="rp"><div class="n">3rd<i>globally</i></div><div class="l">50+ teams · IRC ’26</div></div>
-    <div class="rp"><div class="n">2nd<i>national</i></div><div class="l">40+ teams · CAC ’26</div></div>
+    <div class="rc">
+      <div class="cname">International Rover Challenge 2026</div>
+      <div class="mono">50+ teams · Worldwide · Feb ’26</div>
+      <div class="ranks">
+        <div class="rk"><div class="n">1<i>st</i></div><div class="l">Autonomous Mission</div></div>
+        <div class="rk"><div class="n">3<i>rd</i></div><div class="l">Overall, globally</div></div>
+      </div>
+    </div>
+    <div class="rc">
+      <div class="cname">Caterpillar Autonomy Challenge 2026</div>
+      <div class="mono">40+ teams · National · Jan ’26</div>
+      <div class="ranks">
+        <div class="rk"><div class="n">2<i>nd</i></div><div class="l">GPS-denied navigation</div></div>
+      </div>
+    </div>
   </div>
 
   <div class="rover-grid">
     <div data-rv>
-      <p style="margin-bottom:1.8rem">A year as <b>Software &amp; Electrical Engineer</b> on IIT Madras’ rover team, building the autonomy stack that took a mars rover from CAD model to two podiums. Simulation first, hardware second, sand last.</p>
+      <p style="margin-bottom:1.8rem">A year as <b>Software &amp; Electrical Engineer</b> on IIT Madras’ mars rover team, building the autonomy stack that took the rover from CAD model to two international podiums. Simulation first, hardware second, sand last.</p>
       <ul class="rl">
         <li>Built a <b>1:1 URDF/Xacro model</b> of the rover for exact hardware simulation in Isaac Sim and Gazebo before any deployment</li>
         <li>Implemented <b>A* and RRT*</b> on known maps, with Pure Pursuit on Dubins paths for tracking</li>
@@ -383,28 +420,28 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
   <div class="mos">
     <figure class="m m1" data-rv>
       <div class="duo" data-lb="vid" data-src="./assets/rover-offroad.mp4" data-cap="M.01 · Off-road run, full chassis test">
-        <video src="./assets/rover-offroad.mp4" muted loop playsinline preload="metadata"></video>
+        <video src="./assets/rover-offroad.mp4" poster="./assets/posters/rover-offroad.jpg" muted loop playsinline preload="none"></video>
         <!-- REPLACE: assets/rover-offroad.mp4 -->
       </div>
       <figcaption class="plate"><b>M.01</b><span>Off-road, full chassis test</span></figcaption>
     </figure>
     <figure class="m m2" data-rv>
       <div class="duo" data-lb="vid" data-src="./assets/rviz-nav2.mp4" data-cap="M.02 · Nav2 planning live in RViz. The arrow is the rover.">
-        <video src="./assets/rviz-nav2.mp4" muted loop playsinline preload="metadata"></video>
+        <video src="./assets/rviz-nav2.mp4" poster="./assets/posters/rviz-nav2.jpg" muted loop playsinline preload="none"></video>
         <!-- REPLACE: assets/rviz-nav2.mp4 -->
       </div>
       <figcaption class="plate"><b>M.02</b><span>Mapping + Nav2, live in RViz</span></figcaption>
     </figure>
     <figure class="m m3" data-rv>
       <div class="duo" data-lb="vid" data-src="./assets/auger.mp4" data-cap="M.03 · Auger drilling for soil samples, science mission">
-        <video src="./assets/auger.mp4" muted loop playsinline preload="metadata"></video>
+        <video src="./assets/auger.mp4" poster="./assets/posters/auger.jpg" muted loop playsinline preload="none"></video>
         <!-- REPLACE: assets/auger.mp4 -->
       </div>
       <figcaption class="plate"><b>M.03</b><span>Auger, soil sample extraction</span></figcaption>
     </figure>
     <figure class="m m4" data-rv>
       <div class="duo" data-lb="vid" data-src="./assets/gripper.mp4" data-cap="M.04 · Gripper tip, mechanical assembly">
-        <video src="./assets/gripper.mp4" muted loop playsinline preload="metadata"></video>
+        <video src="./assets/gripper.mp4" poster="./assets/posters/gripper.jpg" muted loop playsinline preload="none"></video>
         <!-- REPLACE: assets/gripper.mp4 (convert the .avi first) -->
       </div>
       <figcaption class="plate"><b>M.04</b><span>Gripper tip assembly</span></figcaption>
@@ -425,7 +462,7 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
     </figure>
     <figure class="m m7" data-rv>
       <div class="duo" data-lb="vid" data-src="./assets/science-mission.mp4" data-cap="M.07 · Science mission run">
-        <video src="./assets/science-mission.mp4" muted loop playsinline preload="metadata"></video>
+        <video src="./assets/science-mission.mp4" poster="./assets/posters/science-mission.jpg" muted loop playsinline preload="none"></video>
         <!-- REPLACE: assets/science-mission.mp4 -->
       </div>
       <figcaption class="plate"><b>M.07</b><span>Science mission run</span></figcaption>
@@ -449,14 +486,14 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
 
       <figure class="fr w-md r2">
         <div class="duo" data-lb="vid" data-src="./assets/nav_final.mp4" data-cap="FR.02 · Autonomous navigation, the winning run">
-          <video src="./assets/nav_final.mp4" muted loop playsinline preload="metadata"></video>
+          <video src="./assets/nav_final.mp4" poster="./assets/posters/nav_final.jpg" muted loop playsinline preload="none"></video>
         </div>
         <figcaption class="plate"><b>FR.02</b><span>Autonomous nav, the winning run ▸</span></figcaption>
       </figure>
 
       <figure class="fr w-md r3">
         <div class="duo" data-lb="vid" data-src="./assets/isaac-sim.mp4" data-cap="FR.03 · Isaac Sim, the virtual proving ground">
-          <video src="./assets/isaac-sim.mp4" muted loop playsinline preload="metadata"></video>
+          <video src="./assets/isaac-sim.mp4" poster="./assets/posters/isaac-sim.jpg" muted loop playsinline preload="none"></video>
           <!-- REPLACE: assets/isaac-sim.mp4 -->
         </div>
         <figcaption class="plate"><b>FR.03</b><span>Isaac Sim, virtual proving ground ▸</span></figcaption>
@@ -565,7 +602,7 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
     <article class="spread" data-rv>
       <div class="sp-media">
         <div class="duo" data-lb="vid" data-src="./assets/warehouse-rover.mp4" data-cap="Warehouse rover on the move, Inter-IIT Tech Meet 14.0">
-          <video src="./assets/warehouse-rover.mp4" muted loop playsinline preload="metadata"></video>
+          <video src="./assets/warehouse-rover.mp4" poster="./assets/posters/warehouse-rover.jpg" muted loop playsinline preload="none"></video>
           <!-- REPLACE: assets/warehouse-rover.mp4 -->
         </div>
       </div>
@@ -588,7 +625,7 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
           <img src="./assets/spider_bot.jpeg" alt="Spider quadruped robot" loading="lazy">
         </div>
         <div class="duo wide" data-lb="vid" data-src="./assets/spider-design.mp4" data-cap="Designing the frame in Fusion 360, prepping for print">
-          <video src="./assets/spider-design.mp4" muted loop playsinline preload="metadata"></video>
+          <video src="./assets/spider-design.mp4" poster="./assets/posters/spider-design.jpg" muted loop playsinline preload="none"></video>
           <!-- REPLACE: assets/spider-design.mp4 (short screen-rec loop) -->
         </div>
       </div>
@@ -601,7 +638,7 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
           <li>Custom <b>power distribution PCB</b> regulating a 7.4V Li-ion source to 5V and 3.3V rails for the ESP32 and Nano</li>
         </ul>
         <div class="tags"><span class="tag">Fusion 360</span><span class="tag">IK gait</span><span class="tag">Custom PCB</span></div>
-        <a class="btn" href="#" target="_blank" rel="noopener">Watch the 5-min build documentary ↗</a><!-- REPLACE: YouTube link to spider documentary -->
+        <button class="btn" type="button" data-lb="yt" data-src="YOUTUBE_VIDEO_ID" data-cap="Spider quadruped, the 5-minute build documentary">Watch the 5-min build documentary ▸</button><!-- REPLACE: YOUTUBE_VIDEO_ID with the ID from your unlisted upload (the part after watch?v=) -->
       </div>
     </article>
   </div>
@@ -710,9 +747,9 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
   <h2 class="foot-h" data-rv>Let’s build something that <em>moves.</em></h2>
 
   <div class="foot-links">
-    <a class="fl" data-mag href="https://github.com/adityabhatewara" target="_blank" rel="noopener">GitHub ↗</a><!-- REPLACE: your GitHub URL -->
-    <a class="fl" data-mag href="https://www.linkedin.com/in/aditya-bhatewara-b9197a320/" target="_blank" rel="noopener">LinkedIn ↗</a><!-- REPLACE: your LinkedIn URL -->
-    <a class="fl" data-mag href="mailto:adityabhatewara9@gmail.com">Email ↗</a><!-- REPLACE: your email -->
+    <a class="fl" data-mag href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a><!-- REPLACE: your GitHub URL -->
+    <a class="fl" data-mag href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn ↗</a><!-- REPLACE: your LinkedIn URL -->
+    <a class="fl" data-mag href="mailto:hello@adityabhatewara.dev">Email ↗</a><!-- REPLACE: your email -->
   </div>
 
   <div class="foot-base">
@@ -846,6 +883,7 @@ function openLb(type,src,c){
   box.innerHTML='';
   var el;
   if(type==='vid'){ el=document.createElement('video'); el.src=src; el.controls=true; el.autoplay=true; el.playsInline=true; }
+  else if(type==='yt'){ el=document.createElement('iframe'); el.src='https://www.youtube-nocookie.com/embed/'+src+'?autoplay=1&rel=0'; el.allow='autoplay; fullscreen; picture-in-picture'; el.allowFullscreen=true; }
   else { el=document.createElement('img'); el.src=src; el.alt=c||''; }
   box.appendChild(el); cap.textContent=c||'';
   lb.classList.add('on'); document.body.style.overflow='hidden';
