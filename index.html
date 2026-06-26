@@ -69,8 +69,8 @@ img,video{display:block;max-width:100%}
 
 /* media block */
 .duo{position:relative;background:var(--ink2);overflow:hidden;cursor:none}
-.duo img,.duo video,.duo iframe{width:100%;height:100%;border:0;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
-.duo:hover img,.duo:hover video,.duo:hover iframe{transform:scale(1.025)}
+.duo img,.duo video{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.duo:hover img,.duo:hover video{transform:scale(1.025)}
 .pend{width:100%;height:100%;min-height:180px;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:var(--ink2)}
 .pend i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--paper-dim);text-align:center;padding:0 1rem}
 .pend::before{content:"⊕";color:var(--copper);font-size:26px}
@@ -118,8 +118,22 @@ img,video{display:block;max-width:100%}
 .mq-seg span::before{content:"◆";color:var(--copper);margin-right:2.4rem;font-size:8px;vertical-align:2px}
 @keyframes mq{to{transform:translateX(-50%)}}
 
+/* ============ FLAGSHIPS ============ */
+.flag-label{display:flex;align-items:center;gap:1rem;margin-top:8vh}
+.flag-label .ix{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--copper);border:1px solid var(--copper);padding:5px 10px}
+.flag-label h3{font-size:clamp(1.6rem,3.6vw,2.8rem);font-weight:560;letter-spacing:-.01em}
+.flag-label h3 em{font-style:italic;font-weight:380;color:var(--copper)}
+.flag-sub{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-dim);margin:.8rem 0 0}
+.flag-sub b{color:var(--copper);font-weight:500}
+
+/* tiles can hold video, img, OR a youtube iframe */
+.duo iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
+/* scale the iframe up slightly to push YT chrome (title bar, buttons) out of the crop */
+.duo.yt iframe{width:142%;height:142%;left:-21%;top:-21%}
+.duo.yt::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(217,142,50,.12)}
+
 /* ============ ROVER FEATURE ============ */
-.res{display:grid;grid-template-columns:1.35fr 1fr;gap:2rem;margin-top:4rem}
+.res{display:grid;grid-template-columns:1.35fr 1fr;gap:2rem;margin-top:3rem}
 .rc{border:1px solid var(--copper);padding:1.8rem 2rem 1.7rem;position:relative}
 .rc::after{content:"◆";position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--copper);font-size:9px;padding:0 6px}
 .rc .cname{font-size:clamp(1.25rem,2.1vw,1.8rem);font-weight:560;line-height:1.12;letter-spacing:-.01em;margin-bottom:.5rem}
@@ -134,18 +148,23 @@ img,video{display:block;max-width:100%}
 .rl li{position:relative;padding-left:1.5rem;font-size:.95rem;color:var(--paper-dim)}
 .rl li::before{content:"▸";position:absolute;left:0;color:var(--copper)}
 .rl li b{color:var(--paper);font-weight:500}
-.mos{display:grid;grid-template-columns:repeat(6,1fr);gap:2.6rem 2rem;margin-top:9vh}
+.mos{display:grid;grid-template-columns:repeat(6,1fr);gap:2.4rem 2rem;margin-top:6vh}
 .m{display:flex;flex-direction:column}
 .m .duo{flex:1;box-shadow:12px 14px 0 rgba(0,0,0,.3)}
-.m1{grid-column:1/5;grid-row:1/3}.m1 .duo{min-height:420px}
-.m2{grid-column:5/7;grid-row:1}.m2 .duo{aspect-ratio:16/10}
-.m3{grid-column:5/7;grid-row:2}.m3 .duo{aspect-ratio:16/10}
-.m4{grid-column:1/3}.m4 .duo{aspect-ratio:4/3}
-.m5{grid-column:3/5}.m5 .duo{aspect-ratio:4/3}
-.m6{grid-column:5/7}.m6 .duo{aspect-ratio:4/3}
-.m7{grid-column:1/7}.m7 .duo{aspect-ratio:21/8}
+/* row 1: tall OFFROAD (left, spans both rows) + NAV2 over PCB (right column) */
+.m1{grid-column:1/4;grid-row:1/3}.m1 .duo{min-height:430px}
+.m2{grid-column:4/7;grid-row:1}.m2 .duo{aspect-ratio:16/9}
+.m3{grid-column:4/7;grid-row:2}.m3 .duo{aspect-ratio:16/9}
+/* row 2: three equal tiles */
+.m4{grid-column:1/3;grid-row:3}.m4 .duo{aspect-ratio:1/1}
+.m5{grid-column:3/5;grid-row:3}.m5 .duo{aspect-ratio:1/1}
+.m6{grid-column:5/7;grid-row:3}.m6 .duo{aspect-ratio:1/1}
 .m:nth-child(odd){transform:rotate(-.5deg)}
 .m:nth-child(even){transform:rotate(.4deg)}
+
+/* MPC flagship media row: 3 tiles */
+.mpc-media{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:5vh}
+.mpc-media .m .duo{aspect-ratio:4/3}
 
 /* ============ GALLERY (horizontal) ============ */
 #field{position:relative;height:380vh}
@@ -275,9 +294,11 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
   .hed{font-size:clamp(2.9rem,14vw,5.2rem)}
   .rover-grid{grid-template-columns:1fr}
   .mos{grid-template-columns:1fr;gap:2.4rem}
-  .m1,.m2,.m3,.m4,.m5,.m6,.m7{grid-column:auto;grid-row:auto}
+  .mos{grid-template-columns:1fr;gap:2.4rem}
+  .m1,.m2,.m3,.m4,.m5,.m6{grid-column:auto;grid-row:auto}
   .m1 .duo{min-height:0;aspect-ratio:16/10}
-  .m7 .duo{aspect-ratio:16/10}
+  .m4 .duo,.m5 .duo,.m6 .duo{aspect-ratio:16/10}
+  .mpc-media{grid-template-columns:1fr;gap:2.4rem}
   #field{height:auto}
   .pin{position:static;height:auto;overflow:visible;padding-top:4vh}
   .pin .head{position:static;margin:0 6vw 3vh}
@@ -313,7 +334,7 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
 <nav class="rail" aria-label="Sections">
   <div class="bar"></div><div class="fill"></div>
   <a href="#top" class="on"><i></i>INTRO</a>
-  <a href="#rover"><i></i>THE&nbsp;ROVER</a>
+  <a href="#rover"><i></i>FLAGSHIPS</a>
   <a href="#field"><i></i>FIELD&nbsp;NOTES</a>
   <a href="#log"><i></i>FLIGHT&nbsp;LOG</a>
   <a href="#builds"><i></i>BUILD&nbsp;LOG</a>
@@ -373,10 +394,68 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
   </div>
 </header>
 
-<!-- ============ THE ROVER (Team Anveshak feature) ============ -->
-<section class="sec" id="rover" aria-label="Team Anveshak mars rover">
-  <div class="kicker"><span class="mono"><b>Flagship</b> · CFI, IIT Madras · Software &amp; Electrical Engineer · Apr ’25 to Apr ’26</span></div>
-  <h2 class="h-sec" data-rv>Team <em>Anveshak</em></h2>
+<!-- ============ FLAGSHIPS ============ -->
+<section class="sec" id="rover" aria-label="Flagship work">
+  <div class="kicker"><span class="mono">The two efforts that defined the year</span></div>
+  <h2 class="h-sec" data-rv>Flag<em>ships</em></h2>
+
+  <!-- FLAGSHIP 01: MPC research -->
+  <div class="flag-label" data-rv>
+    <span class="ix">01</span>
+    <div>
+      <h3>MPC for <em>swarm</em> robots</h3>
+    </div>
+  </div>
+  <p class="flag-sub" data-rv><b>Research</b> · DiRO Lab, Prof. Anuj Tiwari, IIT Madras · Jan ’26 to Present</p>
+
+  <div class="rover-grid" style="margin-top:3.5vh">
+    <div data-rv>
+      <p style="margin-bottom:1.8rem">A research internship in decentralized multi-drone autonomy under <b>Prof. Anuj Tiwari</b>, taking precision landing and swarm coordination from controller theory to validated flight on real hardware.</p>
+      <ul class="rl">
+        <li>Helipad detection via <b>Hu Moment Matching: 94% accuracy at 14m</b> in simulation</li>
+        <li>Height-adaptive <b>PID, SMC and DSR controllers</b> with SEARCH, TRACK, LAND states</li>
+      </ul>
+    </div>
+    <div data-rv>
+      <ul class="rl">
+        <li>Validated on an <b>X500 drone</b>, landing on an evasive platform moving at 1 m/s from 10m detection height</li>
+        <li>Building <b>consensus-based task allocation</b> to neutralize 10+ ground targets across a 4-drone swarm</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mpc-media">
+    <figure class="m" data-rv>
+      <div class="duo" data-lb="img" data-src="./assets/mpc-1.jpeg" data-cap="X500 drone, autonomous landing test">
+        <img src="./assets/mpc-1.jpeg" alt="X500 drone landing" loading="lazy">
+        <!-- REPLACE: assets/mpc-1.jpeg (X500 drone / landing shot) -->
+      </div>
+      <figcaption class="plate"><b>R.01</b><span>X500, autonomous landing</span></figcaption>
+    </figure>
+    <figure class="m" data-rv>
+      <div class="duo" data-lb="img" data-src="./assets/mpc-2.jpeg" data-cap="Helipad detection, Hu moment matching">
+        <img src="./assets/mpc-2.jpeg" alt="Helipad detection" loading="lazy">
+        <!-- REPLACE: assets/mpc-2.jpeg (detection viz / Gazebo) -->
+      </div>
+      <figcaption class="plate"><b>R.02</b><span>Helipad detection</span></figcaption>
+    </figure>
+    <figure class="m" data-rv>
+      <div class="duo" data-lb="img" data-src="./assets/mpc-3.jpeg" data-cap="Swarm coordination in simulation">
+        <img src="./assets/mpc-3.jpeg" alt="Swarm simulation" loading="lazy">
+        <!-- REPLACE: assets/mpc-3.jpeg (swarm sim / RViz) -->
+      </div>
+      <figcaption class="plate"><b>R.03</b><span>Swarm, in sim</span></figcaption>
+    </figure>
+  </div>
+
+  <!-- FLAGSHIP 02: Team Anveshak -->
+  <div class="flag-label" style="margin-top:14vh" data-rv>
+    <span class="ix">02</span>
+    <div>
+      <h3>Team <em>Anveshak</em></h3>
+    </div>
+  </div>
+  <p class="flag-sub" data-rv><b>Mars Rover</b> · CFI, IIT Madras · Software &amp; Electrical Engineer · Apr ’25 to Apr ’26</p>
 
   <div class="res" data-rv>
     <div class="rc">
@@ -398,9 +477,9 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
 
   <div class="rover-grid">
     <div data-rv>
-      <p style="margin-bottom:1.8rem">A year as <b>Software &amp; Electrical Engineer</b> on IIT Madras’ mars rover team, building the autonomy stack that took the rover from CAD model to two international podiums. Simulation first, hardware second, sand last.</p>
+      <p style="margin-bottom:1.8rem">A year building the autonomy stack that took the rover from CAD model to two international podiums. Simulation first, hardware second, sand last.</p>
       <ul class="rl">
-        <li>Built a <b>1:1 URDF/Xacro model</b> of the rover for exact hardware simulation in Isaac Sim and Gazebo before any deployment</li>
+        <li>Built a <b>1:1 URDF/Xacro model</b> for exact hardware simulation in Isaac Sim and Gazebo before deployment</li>
         <li>Implemented <b>A* and RRT*</b> on known maps, with Pure Pursuit on Dubins paths for tracking</li>
         <li>Integrated <b>ZED visual odometry, PX4 GPS and IMU</b> across Orin + Xavier via ROS2, bridged to ESP32 over microROS</li>
         <li>Configured <b>RTAB-Map SLAM</b> fusing stereo vision and LiDAR: under 1m localization on a 30x30m arena</li>
@@ -408,10 +487,10 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
     </div>
     <div data-rv>
       <ul class="rl">
-        <li>Trained <b>YOLOv8 from scratch</b> on 500 augmented images, detecting navigation cones at 20m in sandy terrain</li>
+        <li>Trained <b>YOLOv8 from scratch</b> on 500 augmented images, detecting cones at 20m in sandy terrain</li>
         <li>Tuned Pure Pursuit to self-correct lateral deviation: <b>±0.5m tracking error</b> over 10m traversals</li>
         <li>Full pipeline: Pure Pursuit to GPS waypoint, then <b>YOLO-guided cone approach within 1.5m</b></li>
-        <li>At CAC ’26, GPS-denied navigation: <b>Nav2 obstacle avoidance at 85% success</b>, ArUco pose correction under 4°</li>
+        <li>At CAC ’26, GPS-denied: <b>Nav2 obstacle avoidance at 85% success</b>, ArUco pose correction under 4°</li>
         <li>Recruited and <b>mentored 14 freshers</b> over two months into the team</li>
       </ul>
     </div>
@@ -419,107 +498,42 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
 
   <div class="mos">
     <figure class="m m1" data-rv>
-      <div class="duo">
-        <iframe
-          src="https://www.youtube.com/embed/J7aPJg9bI_M?autoplay=1&mute=1&loop=1&playlist=J7aPJg9bI_M&controls=0&rel=0&playsinline=1"
-          title="Mars Rover Off-Road Traversal | Autonomous Mobility Test | Team Anveshak"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen>
-        </iframe>
+      <div class="duo yt">
+        <iframe src="https://www.youtube.com/embed/J7aPJg9bI_M?autoplay=1&mute=1&loop=1&playlist=J7aPJg9bI_M&controls=0&rel=0&playsinline=1&modestbranding=1" title="Mars Rover Off-Road Traversal" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
-    
-      <figcaption class="plate">
-        <b>M.01</b><span>Off-road, full chassis test</span>
-      </figcaption>
+      <figcaption class="plate"><b>M.01</b><span>Off-road, full chassis test</span></figcaption>
     </figure>
-    <!-- <figure class="m m2" data-rv>
-      <div class="duo" data-lb="vid" data-src="./assets/rviz-nav2.mp4" data-cap="M.02 · Nav2 planning live in RViz. The arrow is the rover.">
-        <video src="./assets/rviz-nav2.mp4" poster="./assets/posters/rviz-nav2.jpg" muted loop playsinline preload="none"></video>
+    <figure class="m m2" data-rv>
+      <div class="duo yt">
+        <iframe src="https://www.youtube.com/embed/SEEQMCG8oCI?autoplay=1&mute=1&loop=1&playlist=SEEQMCG8oCI&controls=0&rel=0&playsinline=1&modestbranding=1" title="Nav2 with SLAM" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <figcaption class="plate"><b>M.02</b><span>Mapping + Nav2, live in RViz</span></figcaption>
-    </figure> -->
-
-      <figure class="m m2" data-rv>
-        <div class="duo">
-          <iframe
-            src="https://www.youtube.com/embed/SEEQMCG8oCI?autoplay=1&mute=1&loop=1&playlist=SEEQMCG8oCI&controls=0&rel=0&playsinline=1"
-            title="Nav2 Implementation with SLAM"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen>
-          </iframe>
-        </div>
-    
-        <figcaption class="plate">
-          <b>M.02</b><span>Mapping + Nav2, live in RViz</span>
-        </figcaption>
-      </figure>
-
-    
-    
+    </figure>
     <figure class="m m3" data-rv>
-      <div class="duo">
-        <iframe
-          src="https://www.youtube.com/embed/_LEwbVP5tio?autoplay=1&mute=1&loop=1&playlist=_LEwbVP5tio&controls=0&rel=0&playsinline=1"
-          title="Autonomous Soil Sampling Drill | Mars Rover Science Mission | Team Anveshak"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen>
-        </iframe>
+      <div class="duo" data-lb="img" data-src="./assets/pcb_3d.png" data-cap="M.03 · Custom motor-driver PCB, 3D view">
+        <img src="./assets/pcb_3d.png" alt="3D render of rover PCB" loading="lazy">
+        <!-- REPLACE: assets/pcb_3d.png (3D PCB render) -->
       </div>
-    
-      <figcaption class="plate">
-        <b>M.03</b><span>Auger, soil sample extraction</span>
-      </figcaption>
-   <figure class="m m4" data-rv>
-      <div class="duo">
-        <iframe
-          src="https://www.youtube.com/embed/jq8D7Vz4XTA?autoplay=1&mute=1&loop=1&playlist=jq8D7Vz4XTA&controls=0&rel=0&playsinline=1"
-          title="Gripper Assembly"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen>
-        </iframe>
+      <figcaption class="plate"><b>M.03</b><span>Motor-driver PCB, 3D</span></figcaption>
+    </figure>
+    <figure class="m m4" data-rv>
+      <div class="duo yt">
+        <iframe src="https://www.youtube.com/embed/_LEwbVP5tio?autoplay=1&mute=1&loop=1&playlist=_LEwbVP5tio&controls=0&rel=0&playsinline=1&modestbranding=1" title="Autonomous Soil Sampling Drill" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
-    
-      <figcaption class="plate">
-        <b>M.04</b><span>Gripper tip assembly</span>
-      </figcaption>
+      <figcaption class="plate"><b>M.04</b><span>Auger, soil sample extraction</span></figcaption>
     </figure>
     <figure class="m m5" data-rv>
-      <div class="duo" data-lb="img" data-src="./assets/base_station.png" data-cap="M.05 · Base station, where the telemetry lands">
-        <img src="./assets/base_station.png" alt="Rover base station" loading="lazy">
-        <!-- REPLACE: assets/base-station.jpeg -->
+      <div class="duo yt">
+        <iframe src="https://www.youtube.com/embed/jq8D7Vz4XTA?autoplay=1&mute=1&loop=1&playlist=jq8D7Vz4XTA&controls=0&rel=0&playsinline=1&modestbranding=1" title="Gripper Assembly" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
-      <figcaption class="plate"><b>M.05</b><span>Base station</span></figcaption>
+      <figcaption class="plate"><b>M.05</b><span>Gripper tip assembly</span></figcaption>
     </figure>
     <figure class="m m6" data-rv>
-      <div class="duo">
-        <iframe
-          src="https://www.youtube.com/embed/_3wCsh3Lobo?autoplay=1&mute=1&loop=1&playlist=_3wCsh3Lobo&controls=0&rel=0&playsinline=1"
-          title="Custom Motor Driver PCB | Mars Rover Electronics | Team Anveshak"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen>
-        </iframe>
+      <div class="duo" data-lb="img" data-src="./assets/base_station.png" data-cap="M.06 · Base station, where the telemetry lands">
+        <img src="./assets/base_station.png" alt="Rover base station" loading="lazy">
+        <!-- REPLACE: assets/base_station.png -->
       </div>
-    
-      <figcaption class="plate">
-        <b>M.06</b><span>PCB, 3D view</span>
-      </figcaption>
-    </figure>
-    <figure class="m m7" data-rv>
-      <div class="duo" data-lb="vid" data-src="./assets/science-mission.mp4" data-cap="M.07 · Science mission run">
-        <video src="./assets/science-mission.mp4" poster="./assets/posters/science-mission.jpg" muted loop playsinline preload="none"></video>
-        <!-- REPLACE: assets/science-mission.mp4 -->
-      </div>
-      <figcaption class="plate"><b>M.07</b><span>Science mission run</span></figcaption>
+      <figcaption class="plate"><b>M.06</b><span>Base station</span></figcaption>
     </figure>
   </div>
 </section>
@@ -592,19 +606,6 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
   <h2 class="h-sec" data-rv style="margin-bottom:9vh">Flight <em>log</em></h2>
 
   <div class="log">
-    <article class="log-e" data-rv>
-      <div class="log-c">
-        <div class="mono"><b>Research</b> · DiRO Lab, Prof. Anuj Tiwari · Jan ’26 to Present</div>
-        <h3>MPC for <em>swarm</em> robots</h3>
-        <ul class="rl">
-          <li>Helipad detection with <b>Hu Moment Matching: 94% accuracy at 14m</b> in simulation</li>
-          <li>Height-adaptive <b>PID, SMC and DSR controllers</b> with SEARCH, TRACK, LAND states for autonomous landing</li>
-          <li>Validated on an <b>X500 drone</b>, landing on an evasive platform moving at 1 m/s from 10m detection height</li>
-          <li>Now building <b>consensus-based task allocation</b> to neutralize 10+ ground targets across a 4-drone swarm</li>
-        </ul>
-        <div class="log-meta"><span class="mono">PX4</span><span class="mono">MAVROS</span><span class="mono">Gazebo</span></div>
-      </div>
-    </article>
 
     <article class="log-e" data-rv>
       <div class="log-c">
