@@ -134,9 +134,18 @@ img,video{display:block;max-width:100%}
 /* FIT yt tile (e.g. PCB with on-screen text): show the WHOLE frame, never crop.
    Iframe matches the box exactly; any aspect mismatch is absorbed by the box
    sizing below, not by cutting the video. */
+
+
+  
 .duo.yt.fit iframe{width:100%;height:100%;left:0;top:0}
 .duo.yt::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(217,142,50,.12)}
 
+.duo.yt.warehouse{
+    aspect-ratio:9/16;
+    max-width:380px;
+    margin:auto;
+}
+  
 /* ============ ROVER FEATURE ============ */
 .res{display:grid;grid-template-columns:1.35fr 1fr;gap:2rem;margin-top:3rem}
 .rc{border:1px solid var(--copper);padding:1.8rem 2rem 1.7rem;position:relative}
@@ -670,7 +679,7 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
   <div class="work">
     <article class="spread" data-rv>
       <div class="sp-media">
-        <div class="duo yt">
+        <div class="duo yt warehouse">
           <iframe
             src="https://www.youtube.com/embed/GcXGgiOP5Qk?autoplay=1&mute=1&loop=1&playlist=GcXGgiOP5Qk&controls=0&rel=0&playsinline=1&modestbranding=1"
             title="Warehouse Rover"
