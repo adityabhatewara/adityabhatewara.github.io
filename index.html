@@ -670,21 +670,34 @@ footer{position:relative;padding:16vh 7vw 6vh;border-top:1px solid var(--line);o
   <div class="work">
     <article class="spread" data-rv>
       <div class="sp-media">
-        <div class="duo" data-lb="vid" data-src="./assets/warehouse-rover.mp4" data-cap="Warehouse rover on the move, Inter-IIT Tech Meet 14.0">
-          <video src="./assets/warehouse-rover.mp4" poster="./assets/posters/warehouse-rover.jpg" muted loop playsinline preload="none"></video>
-          <!-- REPLACE: assets/warehouse-rover.mp4 -->
+        <div class="duo yt">
+          <iframe
+            src="https://www.youtube.com/embed/GcXGgiOP5Qk?autoplay=1&mute=1&loop=1&playlist=GcXGgiOP5Qk&controls=0&rel=0&playsinline=1&modestbranding=1"
+            title="Warehouse Rover"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
         </div>
       </div>
+  
       <div class="sp-text">
         <div class="mono"><b>Inter-IIT Tech Meet 14.0</b> · Eternal · Oct to Dec ’25</div>
+  
         <h3>Warehouse rover</h3>
+  
         <ul class="rl">
           <li>15-member interdisciplinary team designing an autonomous rover for <b>real-time inventory scanning</b></li>
           <li>Fused RPLidar, encoders and IMU via <b>Kalman filter on ROS2 Jazzy Nav2: ±11cm accuracy</b> on a mecanum rover</li>
           <li>Z-axis camera mount with 1.5m vertical range: <b>full rack QR scans, ~10 items in ~2.5 min</b></li>
           <li>RPi 5 with dual MikroTik units: <b>~10ms latency</b> to the base station</li>
         </ul>
-        <div class="tags"><span class="tag">ROS2 Jazzy</span><span class="tag">Kalman</span><span class="tag">Mecanum</span></div>
+  
+        <div class="tags">
+          <span class="tag">ROS2 Jazzy</span>
+          <span class="tag">Kalman</span>
+          <span class="tag">Mecanum</span>
+        </div>
       </div>
     </article>
 
